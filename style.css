@@ -1,0 +1,33 @@
+/* Fullscreen single-view, touch-friendly controls */
+:root{
+  --accent:#e24b4b; /* hot color */
+  --cold:#2c98f0;
+  --bg:#f7f7f7;
+}
+html,body{
+  height:100%;
+  margin:0;
+  background:var(--bg);
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+}
+#map{
+  position:fixed;
+  inset:0;
+  height:100vh;
+  width:100vw;
+  touch-action:manipulation;
+}
+
+/* Simple popup styling tweaks for clarity on mobile */
+.leaflet-popup-content-wrapper{
+  border-radius:12px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.18);
+  font-family:system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-size:15px;
+}
+.leaflet-marker-icon {
+  transform: translate(-12px, -12px) scale(1);
+}
