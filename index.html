@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Hot or Cold Map</title>
   <link rel="stylesheet" href="./style.css" />
+  <!-- favicon using provided logo -->
+  <link rel="icon" href="/geocachinglogosquare-1 (1).png" type="image/png" />
   <!-- Leaflet CSS from CDN (no integrity header to avoid mismatched blocking on some hosts) -->
   <link
     rel="stylesheet"
@@ -12,6 +14,13 @@
   />
 </head>
 <body>
+  <!-- navbar: small fixed bar with clickable favicon linking to about page -->
+  <nav class="topbar" role="navigation" aria-label="Main">
+    <a class="brand" href="./about.html" aria-label="About">
+      <img src="/geocachinglogosquare-1 (1).png" alt="logo" />
+    </a>
+  </nav>
+
   <div id="map" tabindex="0"></div>
 
   <script type="module" src="./app.js"></script>
