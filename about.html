@@ -3,26 +3,41 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Hot or Cold Map</title>
+  <title>About</title>
   <link rel="stylesheet" href="./style.css" />
-  <!-- favicon using provided logo -->
   <link rel="icon" href="/geocachinglogosquare-1 (1).png" type="image/png" />
-  <!-- Leaflet CSS from CDN (no integrity header to avoid mismatched blocking on some hosts) -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
 </head>
 <body>
-  <!-- navbar: small fixed bar with clickable favicon linking to about page -->
   <nav class="topbar" role="navigation" aria-label="Main">
-    <a class="brand" href="./about.html" aria-label="About">
+    <a class="brand" href="./index.html" aria-label="Back to map">
       <img src="/geocachinglogosquare-1 (1).png" alt="logo" />
     </a>
+
+    <div class="nav-actions" role="navigation" aria-label="Pages">
+      <a class="nav-btn" href="./index.html">Map</a>
+      <a class="nav-btn" href="./about.html" aria-current="page">About</a>
+    </div>
   </nav>
 
-  <div id="map" tabindex="0"></div>
+  <main style="padding:72px 16px 16px; max-width:720px; margin:0 auto;">
+    <h1 style="margin:0 0 8px;font-size:20px;">About</h1>
 
-  <script type="module" src="./app.js"></script>
+    <p style="margin:0 0 12px;color:#333;line-height:1.4;">
+      Hot or Cold Map is a simple geolocation guessing game: tap the map to make guesses and the app responds whether your last guess was warmer or colder relative to the hidden coordinates. Keep tapping to home in on the target — get within 20 meters to reveal the coordinates.
+    </p>
+
+    <p style="margin:0 0 12px;color:#333;line-height:1.4;">
+      The UI is optimized for mobile: use touch to tap guesses, or press Enter on a keyboard to drop a marker at the map center.
+    </p>
+
+    <p style="margin:0 0 12px;color:#333;line-height:1.4;">
+      Source code and issues are on GitHub:
+      <a href="https://github.com/idofurst/Hot-and-Cold-GC-game" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-weight:600;">github.com/idofurst/Hot-and-Cold-GC-game</a>
+    </p>
+
+    <p style="margin:0 0 12px;color:#666;font-size:13px;">
+      Tap the logo to go back to the map.
+    </p>
+  </main>
 </body>
 </html>
