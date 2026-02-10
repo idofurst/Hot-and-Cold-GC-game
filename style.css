@@ -50,6 +50,41 @@ html,body{
   display:block;
 }
 
+/* navbar actions (page buttons) */
+.topbar .nav-actions{
+  margin-left:12px;
+  display:flex;
+  gap:8px;
+  margin-inline-start:auto;
+  margin-inline-end:8px;
+  align-items:center;
+}
+.topbar .nav-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:56px;
+  height:36px;
+  padding:0 12px;
+  border-radius:10px;
+  text-decoration:none;
+  color:#222;
+  background:rgba(0,0,0,0.04);
+  font-weight:600;
+  font-size:14px;
+  box-shadow:0 1px 0 rgba(255,255,255,0.6) inset;
+  -webkit-tap-highlight-color: transparent;
+}
+.topbar .nav-btn[aria-current="page"]{
+  background:linear-gradient(180deg, rgba(226,75,75,0.12), rgba(226,75,75,0.08));
+  color:var(--accent);
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+}
+@media (max-width:420px){
+  .topbar .nav-actions{ gap:6px; margin-inline-end:6px; }
+  .topbar .nav-btn{ min-width:48px; height:36px; font-size:13px; padding:0 10px; }
+}
+
 /* Map area sits below the navbar */
 #map{
   position:fixed;
