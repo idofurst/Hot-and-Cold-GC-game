@@ -14,11 +14,16 @@
   />
 </head>
 <body>
-  <!-- navbar: small fixed bar with clickable favicon linking to about page -->
+  <!-- navbar: small fixed bar with clickable favicon and page buttons -->
   <nav class="topbar" role="navigation" aria-label="Main">
-    <a class="brand" href="./about.html" aria-label="About">
+    <a class="brand" href="./index.html" aria-label="Home">
       <img src="/geocachinglogosquare-1 (1).png" alt="logo" />
     </a>
+
+    <div class="nav-actions" role="navigation" aria-label="Pages">
+      <a class="nav-btn" href="./index.html" aria-current="page">Map</a>
+      <a class="nav-btn" href="./about.html">About</a>
+    </div>
   </nav>
 
   <div id="map" tabindex="0"></div>
