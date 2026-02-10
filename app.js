@@ -5,14 +5,28 @@ import L from "https://esm.sh/leaflet@1.9.4";
   N 32° 42.568  => 32.70946666666667 (32 + 42.568/60)
   E 035° 06.469 => 35.10781666666667 (35 + 6.469/60)
 */
-// make TARGET mutable so setTarget can update it
+ // make TARGET mutable so setTarget can update it
 let TARGET = { lat: 32 + 42.568 / 60, lng: 35 + 6.469 / 60 };
 const FOUND_RADIUS_METERS = 20; // reveal coordinates if within this distance
 const HOT_RADIUS_METERS = 1200;  // radius used to compute heat gradient (larger for smoother gradation)
 
-// start the map a bit offset from the target and more zoomed out
-const START_OFFSET = { lat: -0.010, lng: -0.020 }; // map center offset from TARGET
-const START_ZOOM = 11;
+/*
+  start the map a bit offset from the target and much more zoomed out so the initial view
+  shows roughly the whole country. Use a larger randomized offset so each load varies
+  but still keeps the country visible.
+
+  Latitude offset range: ±0.6 degrees (~±67 km)
+  Longitude offset range: ±1.2 degrees (~±100-130 km depending on latitude)
+*/
+function randomOffset() {
+  const randBetween = (min, max) => Math.random() * (max - min) + min;
+  return {
+    lat: randBetween(-0.6, 0.6),
+    lng: randBetween(-1.2, 1.2),
+  };
+}
+const START_OFFSET = randomOffset(); // randomized per-load offset from TARGET
+const START_ZOOM = 7;
 
 const map = L.map("map", {
   center: [TARGET.lat + START_OFFSET.lat, TARGET.lng + START_OFFSET.lng],
@@ -159,13 +173,33 @@ function formatDeg(latOrLng) {
 // Start listening for taps/clicks immediately
 map.on("click", onMapClick);
 
-// On mobile the first interaction might be pinch; also allow keyboard enter to place a marker at center
-map.getContainer().addEventListener("keydown", (ev) => {
+// On mobile the first interaction might be pinch; allow keyboard Enter to place a marker at center,
+// and also translate native touchend taps into map clicks so tapping coordinates triggers FOUND!
+const container = map.getContainer();
+
+// keyboard: Enter places a marker at center
+container.addEventListener("keydown", (ev) => {
   if (ev.key === "Enter") {
     const center = map.getCenter();
     onMapClick({ latlng: center });
   }
 });
+
+// touch: convert touchend point to map latlng and call onMapClick.
+// This ensures tapping on mobile (touchend) uses the same logic as a mouse click and will show FOUND!
+container.addEventListener("touchend", (ev) => {
+  try {
+    const t = ev.changedTouches && ev.changedTouches[0];
+    if (!t) return;
+    // Leaflet can convert a mouse/touch event to container point; use mouseEventToContainerPoint for consistency
+    const containerPoint = map.mouseEventToContainerPoint(t);
+    const latlng = map.containerPointToLatLng(containerPoint);
+    onMapClick({ latlng });
+  } catch (err) {
+    // fallback: do nothing on error
+    console.warn("touchend conversion failed", err);
+  }
+}, { passive: true });
 
 // keep a bit of context around the target but don't center directly on it
 map.setView([TARGET.lat + START_OFFSET.lat, TARGET.lng + START_OFFSET.lng], START_ZOOM);
