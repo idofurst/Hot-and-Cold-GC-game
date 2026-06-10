@@ -6,13 +6,31 @@
   <title>Hot or Cold Map</title>
   <link rel="stylesheet" href="./style.css" />
   <link rel="icon" href="/geologo.png" type="image/png" />
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
-  <div id="map" tabindex="0"></div>
+
+  <div id="startup-modal" class="startup-modal" role="dialog" aria-modal="true" aria-labelledby="startup-title">
+    <div class="startup-card" id="startup-card" tabindex="0">
+      <h2 id="startup-title">Hot or Cold / חם או קר</h2>
+      <div class="startup-content">
+        <div class="col en">
+          <h3>How to play</h3>
+          <p>Tap or click on the map to guess the hidden spot. The map will tell you "Warmer" or "Colder" and show a colored marker (blue = cold, red = hot). Find the spot within the small radius to reveal the final coordinates.</p>
+        </div>
+        <div class="col he">
+          <h3>איך משחקים</h3>
+          <p>הקש/לחץ על המפה כדי לנחש את המקום החבוי. המפה תודיע "חם" או "קר" ותציג סימון צבעוני (כחול = קר, אדום = חם). מצא את המקום בתוך הרדיוס הקטן כדי לחשוף את הקואורדינטות הסופיות.</p>
+        </div>
+      </div>
+      <div class="startup-actions">
+        <button id="got-it-btn" class="btn">Got it / הבנתי</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="map" tabindex="0" aria-hidden="true"></div>
+
   <script type="module" src="./app.js"></script>
 </body>
 </html>
