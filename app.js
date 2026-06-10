@@ -1,13 +1,12 @@
 import L from "https://esm.sh/leaflet@1.9.4";
 
 let TARGET = {
-
   lat: 32 + 7006666666666667 / 1e16,
- 
   lng: 35 + 15746666666666666 / 1e17,
 };
-const FOUND_RADIUS_METERS = 20; 
-const HOT_RADIUS_METERS = 1200;  
+const FOUND_RADIUS_METERS = 20;
+const HOT_RADIUS_METERS = 1200;
+const RING_RADIUS_METERS = 80;
 
 function randomOffset() {
   const randBetween = (min, max) => Math.random() * (max - min) + min;
@@ -35,7 +34,6 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 L.control.zoom({ position: "topright" }).addTo(map);
 
-// helper: haversine distance in meters
 function distanceMeters(a, b) {
   const R = 6371000;
   const toRad = (d) => (d * Math.PI) / 180;
@@ -61,7 +59,6 @@ function lerpColor(t) {
 
 let lastMarker = null;
 let lastCircle = null;
-
 let prevDistance = null;
 
 function onMapClick(e) {
@@ -72,7 +69,7 @@ function onMapClick(e) {
   if (lastCircle) map.removeLayer(lastCircle);
 
   const raw = 1 - Math.min(d, HOT_RADIUS_METERS) / HOT_RADIUS_METERS;
-  const heat = Math.max(0, Math.min(1, raw)); // clamp 0..1
+  const heat = Math.max(0, Math.min(1, raw));
 
   let title = "";
   if (d <= FOUND_RADIUS_METERS) {
@@ -97,8 +94,8 @@ function onMapClick(e) {
   }
 
   const color = lerpColor(heat);
-  const markerRadius = 6 + Math.round(6 * heat); // 6..12
-  const ringRadius = Math.min(Math.max(20, d), 300);
+  const markerRadius = 6 + Math.round(6 * heat);
+  const ringRadius = RING_RADIUS_METERS;
 
   lastMarker = L.circleMarker(clicked, {
     radius: markerRadius,
@@ -137,7 +134,6 @@ function onMapClick(e) {
   prevDistance = d;
 }
 
-// format to D° MM.mmm
 function formatDeg(latOrLng) {
   const negative = latOrLng < 0;
   const abs = Math.abs(latOrLng);
@@ -150,7 +146,6 @@ map.on("click", onMapClick);
 
 const container = map.getContainer();
 
-// keyboard: Enter places a marker at center
 container.addEventListener("keydown", (ev) => {
   if (ev.key === "Enter") {
     const center = map.getCenter();
@@ -201,3 +196,33 @@ function setTarget(lat, lng, opts = {}) {
 }
 
 window.setTarget = setTarget;
+
+(function setupStartupModal(){
+  const modal = document.getElementById("startup-modal");
+  const mapEl = map.getContainer();
+  const card = document.getElementById("startup-card");
+  const btn = document.getElementById("got-it-btn");
+
+  if (!modal || !mapEl || !card || !btn) return;
+
+  mapEl.setAttribute("aria-hidden", "true");
+
+  card.focus();
+
+  function closeModal(){
+    if (!modal) return;
+    modal.parentNode && modal.parentNode.removeChild(modal);
+    mapEl.removeAttribute("aria-hidden");
+    mapEl.focus();
+  }
+
+  btn.addEventListener("click", closeModal, { passive: true });
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  card.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+})();
